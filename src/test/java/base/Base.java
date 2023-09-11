@@ -3,19 +3,21 @@ package base;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 
-public class Base {
+public class Base extends AppiumServer {
     public static AppiumDriver driver;
 
-    @BeforeTest
+    @BeforeSuite
     public static void setUp() throws MalformedURLException, URISyntaxException {
+
+        initServer();
 
         UiAutomator2Options options = new UiAutomator2Options();
         options.setDeviceName("pixel");
@@ -28,10 +30,10 @@ public class Base {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
-    @AfterTest
+    @AfterSuite
     public static void cleanUp(){
-
         driver.quit();
+        stopServer();
     }
 
 

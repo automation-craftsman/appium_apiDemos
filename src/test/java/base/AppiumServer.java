@@ -2,16 +2,14 @@ package base;
 
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
 
 import java.io.File;
 import java.time.Duration;
 
 public class AppiumServer {
 
-    public static AppiumDriverLocalService service;
-    public static void buildAppiumService(){
+    private static AppiumDriverLocalService service;
+    private static void buildAppiumService(){
 
         service = new AppiumServiceBuilder()
                 .withAppiumJS(new File(System.getProperty("user.home") +
@@ -21,7 +19,7 @@ public class AppiumServer {
                 .withTimeout(Duration.ofSeconds(30)).build();
     }
 
-    public static AppiumDriverLocalService getAppiumService(){
+    private static AppiumDriverLocalService getAppiumService(){
 
         if (service == null){
             buildAppiumService();
@@ -30,16 +28,16 @@ public class AppiumServer {
         return service;
     }
 
-    @BeforeSuite
-    public static void initServer(){
+
+    protected static void initServer(){
 
         getAppiumService().start();
         System.out.println(service.getUrl());
         System.out.println("[i] Server Active Status: " + service.isRunning());
     }
 
-    @AfterSuite
-    public static void stopServer(){
+
+    protected static void stopServer(){
 
         if (service != null){
             getAppiumService().stop();
